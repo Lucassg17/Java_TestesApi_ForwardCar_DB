@@ -12,6 +12,7 @@ public class ConexaoBancoDeDados {
     private static String sqlQuery;
     private static Connection conection = null;
     private static Statement statement;
+    private static PreparedStatement stm;
     private static ResultSet resultRegistro;
     private static ResultSet resultLogin;
     private static ResultSet resultEmprestimo;
@@ -31,14 +32,16 @@ public class ConexaoBancoDeDados {
         return conection;
     }
 
-    public static List<DadosParaCriarRegistro> pegarDadosDeRegistroDoBanco(){
+    public static List<DadosParaCriarRegistro> pegarDadosDeRegistroDoBanco(String user){
         Connection connection = criarConexao();
-        sqlQuery = "SELECT * FROM registrolucasepaula";
+        sqlQuery = "SELECT * FROM registrolucasepaula WHERE username = ?";
 
         try {
-            statement = connection.createStatement();
+            //statement = connection.createStatement();
+            stm = connection.prepareStatement(sqlQuery);
+            stm.setString(1, user);
 
-            resultRegistro = statement.executeQuery(sqlQuery);
+            resultRegistro = stm.executeQuery();
 
             while (resultRegistro.next()){
                 DadosParaCriarRegistro dados = new DadosParaCriarRegistro();
@@ -51,7 +54,7 @@ public class ConexaoBancoDeDados {
             }
 
             resultRegistro.close();
-            statement.close();
+            stm.close();
             connection.close();
 
         }catch (SQLException e){
@@ -60,14 +63,16 @@ public class ConexaoBancoDeDados {
         return dadosDeRegistro;
     }
 
-    public static List<DadosParaCriarLogin> pegarDadosDeLoginDoBanco(){
+    public static List<DadosParaCriarLogin> pegarDadosDeLoginDoBanco(String user){
         Connection connection = criarConexao();
-        sqlQuery = "SELECT username, passwrd FROM registrolucasepaula";
+        sqlQuery = "SELECT username, passwrd FROM registrolucasepaula WHERE username = ?";
 
         try {
-            statement = connection.createStatement();
+           // statement = connection.createStatement();
+            stm = connection.prepareStatement(sqlQuery);
+            stm.setString(1, user);
 
-            resultLogin = statement.executeQuery(sqlQuery);
+            resultLogin = stm.executeQuery();
 
             while (resultLogin.next()){
                 DadosParaCriarLogin dados = new DadosParaCriarLogin();
@@ -78,7 +83,7 @@ public class ConexaoBancoDeDados {
             }
 
             resultLogin.close();
-            statement.close();
+            stm.close();
             connection.close();
 
         }catch (SQLException e){
@@ -87,14 +92,18 @@ public class ConexaoBancoDeDados {
         return dadosDeLogin;
     }
 
-    public static List<DadosParaCriarEmprestimo> pegarDadosDeEmprestimoDoBanco(){
+    public static List<DadosParaCriarEmprestimo> pegarDadosDeEmprestimoDoBanco(String address){
         Connection connection = criarConexao();
-        sqlQuery = "SELECT * FROM emprestimoLucasEPaula";
+        sqlQuery = "SELECT * FROM emprestimoLucasEPaula WHERE address1 = ?";
 
         try {
-            statement = connection.createStatement();
+            //statement = connection.createStatement();
+            stm = connection.prepareStatement(sqlQuery);
+            stm.setString(1, address);
 
-            resultEmprestimo = statement.executeQuery(sqlQuery);
+            resultEmprestimo = stm.executeQuery();
+
+            //resultEmprestimo = statement.executeQuery(sqlQuery);
 
             while (resultEmprestimo.next()){
                 DadosParaCriarEmprestimo dados = new DadosParaCriarEmprestimo();
@@ -119,7 +128,7 @@ public class ConexaoBancoDeDados {
             }
 
             resultEmprestimo.close();
-            statement.close();
+            stm.close();
             connection.close();
 
         }catch (SQLException e){

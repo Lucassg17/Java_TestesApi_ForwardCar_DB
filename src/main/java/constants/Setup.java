@@ -14,12 +14,7 @@ public class Setup {
     private String urlEmprestimo;
     private String urlLogin;
     private String urlModelo;
-    private String caminho;
     private Properties prop;
-
-    public String getCaminho() {
-        return caminho;
-    }
 
     public String getUrlEmprestimo() {
         return urlEmprestimo;
@@ -49,8 +44,7 @@ public class Setup {
                         "url-login",
                         "url-modelo",
                         "url-fabrica",
-                        "url-emprestimo",
-                        "caminho"
+                        "url-emprestimo"
                 ));
         prop = new Properties();
         try{
@@ -60,7 +54,6 @@ public class Setup {
             urlModelo = prop.getProperty(configs.get(i++), "http://localhost:3434/cars-app/carShop/models");
             urlFabrica = prop.getProperty(configs.get(i++), "http://localhost:3434/cars-app/carShop/makes");
             urlEmprestimo = prop.getProperty(configs.get(i++), "http://localhost:3434/cars-app/api/loanApp");
-            caminho = prop.getProperty(configs.get(i++), "C:\\Users\\Lucas Gomes\\RestAssured\\MassaDados_ApiForwardCar");
 
         } catch (IOException e){
             e.printStackTrace();
